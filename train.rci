@@ -1,0 +1,23 @@
+# Train detector.
+#
+
+ROOT="/home/xfrancv/Work/impadim/"
+DATA="${ROOT}datasets/crack-2/data.yaml"
+WEIGHTS="yolov5s-seg.pt"
+#WEIGHTS="" 
+
+
+### 
+ml load Seaborn/0.11.2-foss-2021b
+ml load CUDA/11.7.0
+ml load Python/3.10.4-GCCcore-11.3.0
+ml load PyTorch/1.13.0-foss-2022a-CUDA-11.7.0
+ml load torchvision/0.14.0-foss-2022a-CUDA-11.7.0
+ml load OpenCV/4.6.0-foss-2022a-CUDA-11.7.0-contrib
+ml load tqdm/4.64.0-GCCcore-11.3.0
+ml load matplotlib/3.5.2-foss-2022a
+ml load wandb/0.13.4-GCCcore-11.3.0
+ml load tensorboard/2.9.1-foss-2022a
+
+###
+python segment/train.py --img 640 --batch 16 --epochs 10 --data $DATA  --weights $WEIGHTS --cache

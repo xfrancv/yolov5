@@ -1,0 +1,37 @@
+#!/bin/bash
+#SBATCH --job-name=my_gpu_job   # Job name
+#SBATCH --mail-type=ALL            # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=xfrancv@cmp.felk.cvut.cz   # Where to send mail
+#SBATCH --mem=100gb                   # Job Memory
+#SBATCH --output=./logs/array_%A-%a.log    # Standard output and error log
+#SBATCH --error=./logs/error_%A-%a.log    # Standard output and error log
+#SBATCH --partition=gpulong
+#SBATCH --gres=gpu:1
+
+#
+WANDB_API_KEY="7af8cd6e8725881d3d742b41bc62bb1b4dd7be80"
+WANDB_PROJECT="impadim"
+WANDB_ENTITY="vojtechfranc"
+#WANDB_MODE="offline"
+
+#
+ROOT="/home/xfrancv/Work/impadim/"
+DATA="${ROOT}datasets/crack-2/data.yaml"
+WEIGHTS="yolov5s-seg.pt"
+#WEIGHTS="" 
+
+
+### 
+ml load Seaborn/0.11.2-foss-2021b
+ml load CUDA/11.7.0
+ml load Python/3.10.4-GCCcore-11.3.0
+ml load PyTorch/1.13.0-foss-2022a-CUDA-11.7.0
+ml load torchvision/0.14.0-foss-2022a-CUDA-11.7.0
+ml load OpenCV/4.6.0-foss-2022a-CUDA-11.7.0-contrib
+ml load tqdm/4.64.0-GCCcore-11.3.0
+ml load matplotlib/3.5.2-foss-2022a
+ml load wandb/0.13.4-GCCcore-11.3.0
+ml load tensorboard/2.9.1-foss-2022a
+
+###
+python segment/train.py --img 640 --batch 16 --epochs 10 --data $DATA  --weights $WEIGHTS --cache

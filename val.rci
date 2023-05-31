@@ -1,0 +1,25 @@
+# Evaluate trained detector on train/val/test set.
+
+ROOT="/home/xfrancv/Work/impadim/"
+DATA="${ROOT}datasets/crack-2/data.yaml"
+WEIGHTS="${ROOT}runs/train-seg/exp/weights/best.pt"
+
+###################
+#ml load XZ/5.2.5-GCCcore-11.3.0
+ml load Seaborn/0.11.2-foss-2021b
+ml load CUDA/11.7.0
+ml load Python/3.10.4-GCCcore-11.3.0
+ml load PyTorch/1.13.0-foss-2022a-CUDA-11.7.0
+ml load torchvision/0.14.0-foss-2022a-CUDA-11.7.0
+ml load OpenCV/4.6.0-foss-2022a-CUDA-11.7.0-contrib
+ml load tqdm/4.64.0-GCCcore-11.3.0 
+ml load matplotlib/3.5.2-foss-2022a
+
+
+############
+#python segment/predict.py --weights yolov5s-seg.pt --img 640 --conf 0.25 --source data/images
+#python segment/predict.py --weights $WEIGHTS --img 640 --conf 0.25 --source $DATA
+
+#python segment/val.py --weights $WEIGHTS --data $DATA --img 640 --task train
+#python segment/val.py --weights $WEIGHTS --data $DATA --img 640 --task val
+python segment/val.py --weights $WEIGHTS --data $DATA --img 640 --task test 
